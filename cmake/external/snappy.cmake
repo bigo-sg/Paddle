@@ -16,6 +16,16 @@ if(MOBILE_INFERENCE OR RPI)
     return()
 endif()
 
+if (WITH_SNAPPY STREQUAL "system")
+    FIND_PACKAGE(Snappy REQUIRED)
+    if (NOT Snappy_FOUND)
+        message(FATAL_ERROR "snappy not found")
+    endif()
+    message(STATUS "found snappy lib ${Snappy_VERSION}")
+    return()
+endif()
+        
+
 include (ExternalProject)
 
 # NOTE: snappy is needed when linking with recordio

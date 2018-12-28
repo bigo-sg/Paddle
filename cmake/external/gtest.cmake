@@ -12,8 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-IF(WITH_TESTING)
-    ENABLE_TESTING()
+
+IF(WITH_TESTING OR (WITH_DISTRIBUTE AND NOT WITH_GRPC))
+    IF(WITH_TESTING)
+        ENABLE_TESTING()
+    ENDIF(WITH_TESTING)
+
     INCLUDE(ExternalProject)
 
     SET(GTEST_SOURCES_DIR ${THIRD_PARTY_PATH}/gtest)

@@ -14,6 +14,18 @@
 
 include(ExternalProject)
 
+if (WITH_BOOST STREQUAL "system")
+    FIND_PACKAGE(Boost REQUIRED)
+    if (NOT Boost_FOUND)
+        message(FATAL_ERROR "not found boost")
+    endif()
+    message(STATUS "found boost ${Boost_VERSION}")
+    list(APPEND external_project_dependencies boost)
+    include_directories(${Boost_INCLUDE_DIRS})
+    add_library(boost INTERFACE)
+    return()
+endif()
+
 set(BOOST_PROJECT       "extern_boost")
 # To release PaddlePaddle as a pip package, we have to follow the
 # manylinux1 standard, which features as old Linux kernels and

@@ -1,5 +1,17 @@
 INCLUDE(ExternalProject)
 
+if (WITH_EIGEN STREQUAL "system")
+    FIND_PACKAGE(Eigen3 REQUIRED)
+    if (NOT Eigen3_FOUND)
+        message(FATAL_ERROR "eigen not found")
+    endif()
+
+    message(STATUS "found eigen3 ${Eigen3_VERSION}")
+    INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
+    add_library(eigen3 INTERFACE)
+    return()
+endif()
+
 SET(EIGEN_SOURCE_DIR ${THIRD_PARTY_PATH}/eigen3)
 SET(EIGEN_INCLUDE_DIR ${EIGEN_SOURCE_DIR}/src/extern_eigen3)
 INCLUDE_DIRECTORIES(${EIGEN_INCLUDE_DIR})

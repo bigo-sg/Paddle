@@ -14,6 +14,20 @@
 
 INCLUDE(ExternalProject)
 
+if (WITH_GFLAGS STREQUAL "system")
+    FIND_PACKAGE(gflags REQUIRED)
+    if (NOT gflags_FOUND)
+        message(FATAL_ERROR "unable to find gflags")
+    endif()
+
+    include_directories(${gflags_INCLUDE_DIR})
+    message(STATUS "founded gflags ${gflags_VERSION} in ${gflags_INCLUDE_DIR}")
+
+    return()
+endif()
+
+message(STATUS "use bundled gflags")
+
 SET(GFLAGS_SOURCES_DIR ${THIRD_PARTY_PATH}/gflags)
 SET(GFLAGS_INSTALL_DIR ${THIRD_PARTY_PATH}/install/gflags)
 SET(GFLAGS_INCLUDE_DIR "${GFLAGS_INSTALL_DIR}/include" CACHE PATH "gflags include directory." FORCE)

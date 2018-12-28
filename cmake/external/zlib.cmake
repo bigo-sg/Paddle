@@ -14,6 +14,14 @@
 
 INCLUDE(ExternalProject)
 
+if (WITH_ZLIB STREQUAL "system")
+    FIND_PACKAGE(ZLIB REQUIRED)
+    if (NOT ZLIB_FOUND)
+        message(FATAL "Error find zlib")
+        return()
+    endif()
+endif()
+
 SET(ZLIB_SOURCES_DIR ${THIRD_PARTY_PATH}/zlib)
 SET(ZLIB_INSTALL_DIR ${THIRD_PARTY_PATH}/install/zlib)
 SET(ZLIB_ROOT ${ZLIB_INSTALL_DIR} CACHE FILEPATH "zlib root directory." FORCE)

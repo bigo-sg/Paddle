@@ -13,6 +13,30 @@
 # limitations under the License.
 
 INCLUDE(ExternalProject)
+if (WITH_GLOG STREQUAL "system")
+    FIND_PACKAGE(glog REQUIRED)
+    if (NOT glog_FOUND)
+        message(FATAL_ERROR "error find glof")
+    endif()
+    find_path(glog_INCLUDE_DIR glog/logging.h)
+    if (NOT glog_INCLUDE_DIR)
+        message(FATAL_ERROR "error got glog include dir")
+    endif()
+
+    find_path(glog_LIBRARY_DIR lib/libglog.a)
+    if (NOT glog_LIBRARY_DIR)
+        message(FATAL_ERROR "error got glog library")
+    endif()
+    
+    include_directories("${glog_INCLUDE_DIR}/")
+    link_directories("${glog_LIBRARY_DIR}/lib")
+
+    ADD_LIBRARY(glog STATIC IMPORTED GLOBAL)
+    SET_PROPERTY(TARGET glog PROPERTY IMPORTED_LOCATION ${glog_LIBRARY_DIR}/lib/libglog.a)
+    
+    message(STATUS "found glog ${glog_VERSION}  in ${glog_INCLUDE_DIR} : ${glog_LIBRARY_DIR}")
+    return()
+endif()
 
 SET(GLOG_SOURCES_DIR ${THIRD_PARTY_PATH}/glog)
 SET(GLOG_INSTALL_DIR ${THIRD_PARTY_PATH}/install/glog)

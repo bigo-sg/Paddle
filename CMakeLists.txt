@@ -42,15 +42,15 @@ find_package(Threads REQUIRED)
 include(simd)
 
 ################################ Configurations #######################################
-option(WITH_GPU         "Compile PaddlePaddle with NVIDIA GPU"          ${CUDA_FOUND})
+option(WITH_GPU         "Compile PaddlePaddle with NVIDIA GPU"          OFF)
 option(WITH_AMD_GPU     "Compile PaddlePaddle with AMD GPU"             OFF)
-option(WITH_AVX         "Compile PaddlePaddle with AVX intrinsics"      ${AVX_FOUND})
-option(WITH_MKL         "Compile PaddlePaddle with MKL support."        ${AVX_FOUND})
+option(WITH_AVX         "Compile PaddlePaddle with AVX intrinsics"      ON)
+option(WITH_MKL         "Compile PaddlePaddle with MKL support."        ON)
 option(WITH_NGRAPH      "Compile PaddlePaddle with nGraph support."     OFF)
-option(WITH_DSO         "Compile PaddlePaddle with dynamic linked CUDA" ON)
+option(WITH_DSO         "Compile PaddlePaddle with dynamic linked CUDA" OFF)
 option(WITH_TESTING     "Compile PaddlePaddle with unit testing"        OFF)
-option(WITH_SWIG_PY     "Compile PaddlePaddle with inference api"       ON)
-option(WITH_PYTHON      "Compile PaddlePaddle with python interpreter"  ON)
+option(WITH_SWIG_PY     "Compile PaddlePaddle with inference api"       OFF)
+option(WITH_PYTHON      "Compile PaddlePaddle with python interpreter"  OFF)
 option(WITH_DOUBLE      "Compile PaddlePaddle with double precision"    OFF)
 option(WITH_RDMA        "Compile PaddlePaddle with RDMA support"        OFF)
 option(WITH_TIMER       "Compile PaddlePaddle with stats timer"         OFF)
@@ -60,9 +60,9 @@ option(WITH_COVERAGE    "Compile PaddlePaddle with code coverage"       OFF)
 option(COVERALLS_UPLOAD "Package code coverage data to coveralls"       OFF)
 option(ON_TRAVIS        "Exclude special unit test on Travis CI"        OFF)
 option(WITH_C_API       "Compile PaddlePaddle with C-API(Prediction)"   OFF)
-option(WITH_FLUID_ONLY  "Compile PaddlePaddle fluid only"               OFF)
+option(WITH_FLUID_ONLY  "Compile PaddlePaddle fluid only"               ON)
 option(WITH_GOLANG      "Compile PaddlePaddle with GOLANG"              OFF)
-option(GLIDE_INSTALL    "Download and install go dependencies "         ON)
+option(GLIDE_INSTALL    "Download and install go dependencies "         OFF)
 option(USE_NNPACK       "Compile PaddlePaddle with NNPACK library"      OFF)
 option(WITH_DISTRIBUTE  "Compile with distributed support"              OFF)
 option(USE_EIGEN_FOR_BLAS   "Use matrix multiplication in Eigen"        OFF)
@@ -75,7 +75,7 @@ option(ANAKIN_BUILD_FAT_BIN "Build anakin cuda fat-bin lib for all device plantf
 option(ANAKIN_BUILD_CROSS_PLANTFORM "Build anakin lib for any nvidia device plantform. ignored when WITH_ANAKIN=OFF" ON)
 option(WITH_GRPC     "Use grpc as the default rpc framework"            ${WITH_DISTRIBUTE})
 option(WITH_BRPC_RDMA     "Use brpc rdma as the rpc protocal"           OFF)
-option(ON_INFER         "Turn on inference optimization."               OFF)
+option(ON_INFER         "Turn on inference optimization."               ON)
 option(WITH_INFERENCE_API_TEST   "Test fluid inference high-level api interface"  OFF)
 option(WITH_SYSTEM_BLAS   "Use system blas library"           OFF)
 option(PY_VERSION       "Compile PaddlePaddle with python3 support"     ${PY_VERSION})
@@ -193,15 +193,15 @@ include(external/gflags)    # download, build, install gflags
 include(external/glog)      # download, build, install glog
 include(external/gtest)     # download, build, install gtest
 include(external/protobuf)  # download, build, install protobuf
-include(external/python)    # download, build, install python
+#include(external/python)    # download, build, install python
 include(external/openblas)  # download, build, install openblas
 include(external/mkldnn)    # download, build, install mkldnn
 include(external/ngraph)    # download, build, install nGraph
-include(external/swig)      # download, build, install swig
+#include(external/swig)      # download, build, install swig
 include(external/boost)     # download boost
 include(external/any)       # download libn::any
 include(external/eigen)     # download eigen3
-include(external/pybind11)  # download pybind11
+#include(external/pybind11)  # download pybind11
 include(external/cares)
 include(external/cub)
 include(external/rocprim)
@@ -216,6 +216,12 @@ include(external/warpctc)   # download, build, install warpctc
 include(cupti)
 include(external/gzstream)
 endif (NOT WIN32)
+
+if(WITH_PSLIB)
+    include(external/libmct)
+    include(external/pslib_brpc)
+    include(external/pslib)
+endif(WITH_PSLIB)
 
 if(WITH_DISTRIBUTE)
     if(WITH_GRPC)
@@ -249,7 +255,7 @@ if(WITH_GPU)
     include(tensorrt)
 endif()
 if(WITH_MKL OR WITH_MKLML)
-    include(external/anakin)
+   # include(external/anakin)
 elseif()
     set(WITH_ANAKIN OFF CACHE STRING "Anakin is used in MKL only now." FORCE)
 endif()

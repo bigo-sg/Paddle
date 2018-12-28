@@ -13,6 +13,29 @@
 # limitations under the License.
 
 INCLUDE(ExternalProject)
+
+if (WITH_PROTOBUF STREQUAL "system")
+    FIND_PACKAGE(Protobuf REQUIRED)
+    if (NOT PROTOBUF_FOUND)
+        message(FATAL_ERROR "protobuf not found")
+    endif()
+
+    message(STATUS "protoc ${PROTOBUF_PROTOC_EXECUTABLE} found ${PROTOBUF_INCLUDE_DIRS}")
+    include_directories(${PROTOBUF_INCLUDE_DIRS})
+
+    ADD_LIBRARY(protobuf STATIC IMPORTED GLOBAL)
+    SET_PROPERTY(TARGET protobuf PROPERTY IMPORTED_LOCATION ${PROTOBUF_LIBRARIES})
+
+    ADD_LIBRARY(libprotoc STATIC IMPORTED GLOBAL)
+    SET_PROPERTY(TARGET libprotoc PROPERTY IMPORTED_LOCATION ${PROTOBUF_LIBRARIES})
+
+    ADD_EXECUTABLE(protoc IMPORTED GLOBAL)
+    SET_PROPERTY(TARGET protoc PROPERTY IMPORTED_LOCATION ${PROTOBUF_PROTOC_EXECUTABLE})
+    SET(Protobuf_PROTOC_EXECUTABLE ${PROTOBUF_PROTOC_EXECUTABLE})
+
+    return()
+endif()
+
 # Always invoke `FIND_PACKAGE(Protobuf)` for importing function protobuf_generate_cpp
 IF(NOT WIN32)
 FIND_PACKAGE(Protobuf QUIET)
