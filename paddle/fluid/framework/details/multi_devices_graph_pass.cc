@@ -423,7 +423,7 @@ std::unique_ptr<ir::Graph> MultiDevSSAGraphBuilder::ApplyImpl(
                     break;
                 }
               }
-            } catch (boost::bad_get e) {
+            } catch (const boost::bad_get& e) {
             }
           }
         }

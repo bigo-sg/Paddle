@@ -41,7 +41,7 @@ IVector* IVector::create(const std::vector<int>& data, bool useGpu) {
 IVector* IVector::createVectorFromNumpy(int* data,
                                         int dim,
                                         bool copy,
-                                        bool useGpu) throw(UnsupportError) {
+                                        bool useGpu)  {
   if (useGpu) {
     /// if use gpu only copy=true is supported
     if (!copy) {
@@ -87,7 +87,7 @@ IntArray IVector::getData() const {
   }
 }
 
-int& IVector::operator[](const size_t idx) throw(RangeError, UnsupportError) {
+int& IVector::operator[](const size_t idx)  {
   if (this->isGpu()) {
     UnsupportError e;
     throw e;
@@ -101,7 +101,7 @@ int& IVector::operator[](const size_t idx) throw(RangeError, UnsupportError) {
 }
 
 const int& IVector::operator[](const size_t idx) const
-    throw(RangeError, UnsupportError) {
+     {
   return (*const_cast<IVector*>(this))[idx];
 }
 
@@ -122,7 +122,7 @@ void* IVector::getSharedPtr() const { return &m->vec; }
 
 size_t IVector::getSize() const { return m->vec->getSize(); }
 
-void IVector::toNumpyArrayInplace(int** data, int* dim1) throw(UnsupportError) {
+void IVector::toNumpyArrayInplace(int** data, int* dim1)  {
   auto v = std::dynamic_pointer_cast<paddle::CpuIVector>(m->vec);
   if (v) {
     *data = v->getData();
@@ -155,7 +155,7 @@ struct VectorPrivate {
 
   void safeAccessData(const size_t idx,
                       const std::function<void(float&)>& func) const
-      throw(RangeError, UnsupportError) {
+       {
     auto cpuVec = std::dynamic_pointer_cast<const paddle::CpuVector>(vec);
     if (cpuVec != nullptr) {
       if (idx < vec->getSize()) {
@@ -201,7 +201,7 @@ Vector* Vector::createByPaddleVectorPtr(void* ptr) {
 Vector* Vector::createVectorFromNumpy(float* data,
                                       int dim,
                                       bool copy,
-                                      bool useGpu) throw(UnsupportError) {
+                                      bool useGpu)  {
   if (useGpu) {
     /// if use gpu only copy=True is supported
     if (!copy) {
@@ -234,7 +234,7 @@ Vector* Vector::createGpuVectorFromNumpy(float* data, int dim) {
 }
 
 void Vector::toNumpyArrayInplace(float** view_data,
-                                 int* dim1) throw(UnsupportError) {
+                                 int* dim1)  {
   auto v = std::dynamic_pointer_cast<paddle::CpuVector>(m->vec);
   if (v != nullptr) {
     *view_data = v->getData();
@@ -277,7 +277,7 @@ FloatArray Vector::getData() const {
   }
 }
 
-void Vector::copyFrom(Vector* src) throw(RangeError) {
+void Vector::copyFrom(Vector* src)  {
   if (src->m->vec->getSize() != m->vec->getSize()) {
     throw RangeError();
   }
@@ -288,7 +288,7 @@ bool Vector::isGpu() const {
   return std::dynamic_pointer_cast<paddle::GpuVector>(m->vec) != nullptr;
 }
 
-float Vector::get(const size_t idx) const throw(RangeError, UnsupportError) {
+float Vector::get(const size_t idx) const  {
   float r;
   m->safeAccessData(idx, [&](float& o) { r = o; });
   return r;

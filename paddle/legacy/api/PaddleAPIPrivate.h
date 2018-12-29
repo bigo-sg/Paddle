@@ -53,7 +53,7 @@ struct ModelConfigPrivate {
 struct ArgumentsPrivate {
   std::vector<paddle::Argument> outputs;
 
-  inline paddle::Argument& getArg(size_t idx) throw(RangeError) {
+  inline paddle::Argument& getArg(size_t idx)  {
     if (idx < outputs.size()) {
       return outputs[idx];
     } else {

@@ -33,7 +33,7 @@ void Writer::Flush() {
 }
 
 Writer::~Writer() {
-  PADDLE_ENFORCE(cur_chunk_.Empty(), "Writer must be flushed when destroy.");
+  PADDLE_ENFORCE_NOEXCEPT(cur_chunk_.Empty(), "Writer must be flushed when destroy.");
 }
 
 }  // namespace recordio

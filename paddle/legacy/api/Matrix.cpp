@@ -57,7 +57,7 @@ Matrix* Matrix::createDenseFromNumpy(float* data,
                                      int dim1,
                                      int dim2,
                                      bool copy,
-                                     bool useGpu) throw(UnsupportError) {
+                                     bool useGpu)  {
   if (useGpu) {
     /// Gpu mode only supports copy=True
     if (!copy) {
@@ -113,7 +113,7 @@ size_t Matrix::getHeight() const { return m->mat->getHeight(); }
 
 size_t Matrix::getWidth() const { return m->mat->getWidth(); }
 
-float Matrix::get(size_t x, size_t y) const throw(RangeError) {
+float Matrix::get(size_t x, size_t y) const  {
   if (x > this->getWidth() || y > this->getHeight()) {
     RangeError e;
     throw e;
@@ -142,7 +142,7 @@ bool Matrix::isSparse() const {
          dynamic_cast<paddle::GpuSparseMatrix*>(raw_mat) != nullptr;
 }
 
-SparseValueType Matrix::getSparseValueType() const throw(UnsupportError) {
+SparseValueType Matrix::getSparseValueType() const  {
   auto cpuSparseMat =
       std::dynamic_pointer_cast<paddle::CpuSparseMatrix>(m->mat);
   if (cpuSparseMat != nullptr) {
@@ -159,7 +159,7 @@ SparseValueType Matrix::getSparseValueType() const throw(UnsupportError) {
   }
 }
 
-SparseFormatType Matrix::getSparseFormat() const throw(UnsupportError) {
+SparseFormatType Matrix::getSparseFormat() const  {
   auto cpuSparseMat =
       std::dynamic_pointer_cast<paddle::CpuSparseMatrix>(m->mat);
   if (cpuSparseMat != nullptr) {
@@ -177,7 +177,7 @@ SparseFormatType Matrix::getSparseFormat() const throw(UnsupportError) {
 }
 
 IntArray Matrix::getSparseRowCols(size_t i) const
-    throw(UnsupportError, RangeError) {
+     {
   auto cpuSparseMat =
       std::dynamic_pointer_cast<paddle::CpuSparseMatrix>(m->mat);
   if (cpuSparseMat != nullptr &&
@@ -197,7 +197,7 @@ IntArray Matrix::getSparseRowCols(size_t i) const
 }
 
 IntWithFloatArray Matrix::getSparseRowColsVal(size_t i) const
-    throw(UnsupportError, RangeError) {
+     {
   auto cpuSparseMat =
       std::dynamic_pointer_cast<paddle::CpuSparseMatrix>(m->mat);
   if (cpuSparseMat != nullptr &&
@@ -236,7 +236,7 @@ FloatArray Matrix::getData() const {
 void Matrix::sparseCopyFrom(
     const std::vector<int>& rows,
     const std::vector<int>& cols,
-    const std::vector<float>& vals) throw(UnsupportError) {
+    const std::vector<float>& vals)  {
   auto cpuSparseMat =
       std::dynamic_pointer_cast<paddle::CpuSparseMatrix>(m->mat);
   if (cpuSparseMat != nullptr) {
@@ -256,7 +256,7 @@ void* Matrix::getSharedPtr() const { return &m->mat; }
 
 void Matrix::toNumpyMatInplace(float** view_data,
                                int* dim1,
-                               int* dim2) throw(UnsupportError) {
+                               int* dim2)  {
   auto cpuMat = std::dynamic_pointer_cast<paddle::CpuMatrix>(m->mat);
   if (cpuMat) {
     *dim1 = cpuMat->getHeight();
@@ -268,7 +268,7 @@ void Matrix::toNumpyMatInplace(float** view_data,
 }
 void Matrix::copyToNumpyMat(float** view_m_data,
                             int* dim1,
-                            int* dim2) throw(UnsupportError) {
+                            int* dim2)  {
   static_assert(sizeof(paddle::real) == sizeof(float),
                 "Currently PaddleAPI only support for single "
                 "precision version of paddle.");
@@ -296,7 +296,7 @@ void Matrix::copyToNumpyMat(float** view_m_data,
 
 void Matrix::copyFromNumpyMat(float* data,
                               int dim1,
-                              int dim2) throw(UnsupportError, RangeError) {
+                              int dim2)  {
   if (isSparse()) {
     throw UnsupportError();
   } else {

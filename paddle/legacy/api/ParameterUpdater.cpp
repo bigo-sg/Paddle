@@ -34,7 +34,7 @@ ParameterUpdater *ParameterUpdater::createLocalUpdater(
 ParameterUpdater *ParameterUpdater::createNewRemoteUpdater(
     OptimizationConfig *config,
     const std::string pserverSpec,
-    const bool useEtcd) throw(UnsupportError) {
+    const bool useEtcd)  {
 #ifndef PADDLE_WITHOUT_GOLANG
   auto updater = new ParameterUpdater();
   updater->m->updater.reset(new paddle::NewRemoteParameterUpdater(

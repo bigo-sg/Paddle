@@ -163,7 +163,7 @@ class PathSequenceResults : public ISequenceResults {
       : path_(path), dict_(dict) {}
 
   size_t getSize() const { return path_->size(); }
-  std::string getSentence(size_t id, bool split) const throw(RangeError) {
+  std::string getSentence(size_t id, bool split) const  {
     if (id < getSize()) {
       Path& p = (*path_)[id];
       std::ostringstream sout;
@@ -177,7 +177,7 @@ class PathSequenceResults : public ISequenceResults {
       throw e;
     }
   }
-  std::vector<int> getSequence(size_t id) const throw(RangeError) {
+  std::vector<int> getSequence(size_t id) const  {
     if (id < getSize()) {
       Path& p = (*path_)[id];
       return p.ids;
@@ -186,7 +186,7 @@ class PathSequenceResults : public ISequenceResults {
       throw e;
     }
   }
-  float getScore(size_t id) const throw(RangeError) {
+  float getScore(size_t id) const  {
     if (id < getSize()) {
       Path& p = (*path_)[id];
       return p.logProb;

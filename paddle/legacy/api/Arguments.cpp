@@ -45,42 +45,42 @@ Arguments* Arguments::createByPaddleArgument(const void* ptr) {
   return args;
 }
 
-Matrix* Arguments::getSlotValue(size_t idx) const throw(RangeError) {
+Matrix* Arguments::getSlotValue(size_t idx) const  {
   auto& a = m->getArg(idx);
   return Matrix::createByPaddleMatrixPtr(&a.value);
 }
 
-Matrix* Arguments::getSlotGrad(size_t idx) const throw(RangeError) {
+Matrix* Arguments::getSlotGrad(size_t idx) const  {
   auto& a = m->getArg(idx);
   return Matrix::createByPaddleMatrixPtr(&a.grad);
 }
 
-IVector* Arguments::getSlotIds(size_t idx) const throw(RangeError) {
+IVector* Arguments::getSlotIds(size_t idx) const  {
   auto& a = m->getArg(idx);
   return IVector::createByPaddleVectorPtr(&a.ids);
 }
 
-Matrix* Arguments::getSlotIn(size_t idx) const throw(RangeError) {
+Matrix* Arguments::getSlotIn(size_t idx) const  {
   auto& a = m->getArg(idx);
   return Matrix::createByPaddleMatrixPtr(&a.in);
 }
 
-void Arguments::setSlotValue(size_t idx, Matrix* mat) throw(RangeError) {
+void Arguments::setSlotValue(size_t idx, Matrix* mat)  {
   auto& a = m->getArg(idx);
   a.value = m->cast<paddle::Matrix>(mat->getSharedPtr());
 }
 
-void Arguments::setSlotGrad(size_t idx, Matrix* mat) throw(RangeError) {
+void Arguments::setSlotGrad(size_t idx, Matrix* mat)  {
   auto& a = m->getArg(idx);
   a.grad = m->cast<paddle::Matrix>(mat->getSharedPtr());
 }
 
-void Arguments::setSlotIn(size_t idx, Matrix* mat) throw(RangeError) {
+void Arguments::setSlotIn(size_t idx, Matrix* mat)  {
   auto& a = m->getArg(idx);
   a.in = m->cast<paddle::Matrix>(mat->getSharedPtr());
 }
 
-void Arguments::setSlotIds(size_t idx, IVector* vec) throw(RangeError) {
+void Arguments::setSlotIds(size_t idx, IVector* vec)  {
   auto& a = m->getArg(idx);
   auto& v = m->cast<paddle::IVector>(vec->getSharedPtr());
   a.ids = v;
@@ -99,7 +99,7 @@ static inline void doCopyFromSafely(std::shared_ptr<T1>& dest,
 }
 
 IVector* Arguments::getSlotSequenceStartPositions(size_t idx) const
-    throw(RangeError) {
+     {
   auto& a = m->getArg(idx);
   if (a.sequenceStartPositions) {
     return IVector::createByPaddleVectorPtr(
@@ -110,7 +110,7 @@ IVector* Arguments::getSlotSequenceStartPositions(size_t idx) const
 }
 
 IVector* Arguments::getSlotSubSequenceStartPositions(size_t idx) const
-    throw(RangeError) {
+     {
   auto& a = m->getArg(idx);
   if (a.subSequenceStartPositions) {
     return IVector::createByPaddleVectorPtr(
@@ -121,52 +121,52 @@ IVector* Arguments::getSlotSubSequenceStartPositions(size_t idx) const
 }
 
 void Arguments::setSlotSequenceStartPositions(size_t idx,
-                                              IVector* vec) throw(RangeError) {
+                                              IVector* vec)  {
   auto& a = m->getArg(idx);
   auto& v = m->cast<paddle::IVector>(vec->getSharedPtr());
   a.sequenceStartPositions = std::make_shared<paddle::ICpuGpuVector>(v);
 }
 
 void Arguments::setSlotSubSequenceStartPositions(
-    size_t idx, IVector* vec) throw(RangeError) {
+    size_t idx, IVector* vec)  {
   auto& a = m->getArg(idx);
   auto& v = m->cast<paddle::IVector>(vec->getSharedPtr());
   a.subSequenceStartPositions = std::make_shared<paddle::ICpuGpuVector>(v);
 }
 
-IVector* Arguments::getSlotSequenceDim(size_t idx) const throw(RangeError) {
+IVector* Arguments::getSlotSequenceDim(size_t idx) const  {
   auto& a = m->getArg(idx);
   return IVector::createByPaddleVectorPtr(&a.cpuSequenceDims);
 }
 
-void Arguments::setSlotSequenceDim(size_t idx, IVector* vec) throw(RangeError) {
+void Arguments::setSlotSequenceDim(size_t idx, IVector* vec)  {
   auto& a = m->getArg(idx);
   a.cpuSequenceDims = m->cast<paddle::IVector>(vec->getSharedPtr());
 }
 
 float Arguments::sum() const { return paddle::Argument::sum(m->outputs); }
 
-int64_t Arguments::getBatchSize(size_t idx) const throw(RangeError) {
+int64_t Arguments::getBatchSize(size_t idx) const  {
   auto& a = m->getArg(idx);
   return a.getBatchSize();
 }
 
-void Arguments::setSlotFrameHeight(size_t idx, size_t h) throw(RangeError) {
+void Arguments::setSlotFrameHeight(size_t idx, size_t h)  {
   auto& a = m->getArg(idx);
   a.setFrameHeight(h);
 }
 
-void Arguments::setSlotFrameWidth(size_t idx, size_t w) throw(RangeError) {
+void Arguments::setSlotFrameWidth(size_t idx, size_t w)  {
   auto& a = m->getArg(idx);
   a.setFrameWidth(w);
 }
 
-size_t Arguments::getSlotFrameHeight(size_t idx) const throw(RangeError) {
+size_t Arguments::getSlotFrameHeight(size_t idx) const  {
   auto& a = m->getArg(idx);
   return a.getFrameHeight();
 }
 
-size_t Arguments::getSlotFrameWidth(size_t idx) const throw(RangeError) {
+size_t Arguments::getSlotFrameWidth(size_t idx) const  {
   auto& a = m->getArg(idx);
   return a.getFrameWidth();
 }

@@ -23,7 +23,6 @@ function(copy TARGET)
     list(LENGTH copy_lib_SRCS copy_lib_SRCS_len)
     list(LENGTH copy_lib_DSTS copy_lib_DSTS_len)
     if (NOT ${copy_lib_SRCS_len} EQUAL ${copy_lib_DSTS_len})
-        return()
         message(FATAL_ERROR "${TARGET} source numbers are not equal to destination numbers")
     endif ()
     math(EXPR len "${copy_lib_SRCS_len} - 1")
@@ -61,33 +60,33 @@ function(copy TARGET)
 endfunction()
 
 # third party
-set(dst_dir "${FLUID_INSTALL_DIR}/third_party/eigen3")
-copy(eigen3_lib
-        SRCS ${EIGEN_INCLUDE_DIR}/Eigen/Core ${EIGEN_INCLUDE_DIR}/Eigen/src ${EIGEN_INCLUDE_DIR}/unsupported/Eigen
-        DSTS ${dst_dir}/Eigen ${dst_dir}/Eigen ${dst_dir}/unsupported
-        DEPS eigen3
-        )
-
-set(dst_dir "${FLUID_INSTALL_DIR}/third_party/install/gflags")
-copy(gflags_lib
-        SRCS ${GFLAGS_INCLUDE_DIR} ${GFLAGS_LIBRARIES}
-        DSTS ${dst_dir} ${dst_dir}/lib
-        DEPS gflags
-        )
-
-set(dst_dir "${FLUID_INSTALL_DIR}/third_party/install/glog")
-copy(glog_lib
-        SRCS ${GLOG_INCLUDE_DIR} ${GLOG_LIBRARIES}
-        DSTS ${dst_dir} ${dst_dir}/lib
-        DEPS glog
-        )
-
-set(dst_dir "${FLUID_INSTALL_DIR}/third_party/boost/")
-copy(boost_lib
-        SRCS ${BOOST_INCLUDE_DIR}/boost
-        DSTS ${dst_dir}
-        DEPS boost
-        )
+#set(dst_dir "${FLUID_INSTALL_DIR}/third_party/eigen3")
+#copy(eigen3_lib
+#        SRCS ${EIGEN_INCLUDE_DIR}/Eigen/Core ${EIGEN_INCLUDE_DIR}/Eigen/src ${EIGEN_INCLUDE_DIR}/unsupported/Eigen
+#        DSTS ${dst_dir}/Eigen ${dst_dir}/Eigen ${dst_dir}/unsupported
+#        DEPS eigen3
+#        )
+#
+#set(dst_dir "${FLUID_INSTALL_DIR}/third_party/install/gflags")
+#copy(gflags_lib
+#        SRCS ${GFLAGS_INCLUDE_DIR} ${GFLAGS_LIBRARIES}
+#        DSTS ${dst_dir} ${dst_dir}/lib
+#        DEPS gflags
+#        )
+#
+#set(dst_dir "${FLUID_INSTALL_DIR}/third_party/install/glog")
+#copy(glog_lib
+#        SRCS ${GLOG_INCLUDE_DIR} ${GLOG_LIBRARIES}
+#        DSTS ${dst_dir} ${dst_dir}/lib
+#        DEPS glog
+#        )
+#
+#set(dst_dir "${FLUID_INSTALL_DIR}/third_party/boost/")
+#copy(boost_lib
+#        SRCS ${BOOST_INCLUDE_DIR}/boost
+#        DSTS ${dst_dir}
+#        DEPS boost
+#        )
 
 set(dst_dir "${FLUID_INSTALL_DIR}/third_party/install/xxhash")
 copy(xxhash_lib
@@ -96,14 +95,14 @@ copy(xxhash_lib
         DEPS xxhash
         )
 
-if (NOT PROTOBUF_FOUND)
-    set(dst_dir "${FLUID_INSTALL_DIR}/third_party/install/protobuf")
-    copy(protobuf_lib
-            SRCS ${PROTOBUF_INCLUDE_DIR} ${PROTOBUF_LIBRARY}
-            DSTS ${dst_dir} ${dst_dir}/lib
-            DEPS extern_protobuf
-            )
-endif ()
+#if (NOT PROTOBUF_FOUND)
+#    set(dst_dir "${FLUID_INSTALL_DIR}/third_party/install/protobuf")
+#    copy(protobuf_lib
+#            SRCS ${PROTOBUF_INCLUDE_DIR} ${PROTOBUF_LIBRARY}
+#            DSTS ${dst_dir} ${dst_dir}/lib
+#            DEPS extern_protobuf
+#            )
+#endif ()
 
 if (NOT CBLAS_FOUND)
     set(dst_dir "${FLUID_INSTALL_DIR}/third_party/install/openblas")
@@ -124,7 +123,7 @@ endif ()
 if (WITH_MKLDNN)
     set(dst_dir "${FLUID_INSTALL_DIR}/third_party/install/mkldnn")
     copy(mkldnn_lib
-            SRCS ${MKLDNN_INC_DIR} ${MKLDNN_SHARED_LIB}
+            SRCS ${MKLDNN_INC_DIR} ${MKLDNN_STATIC_LIB}
             DSTS ${dst_dir} ${dst_dir}/lib
             DEPS mkldnn
             )
@@ -144,11 +143,11 @@ if (NOT WIN32)
                 DSTS ${dst_dir} ${dst_dir}/lib
                 DEPS snappystream)
 
-        set(dst_dir "${FLUID_INSTALL_DIR}/third_party/install/zlib")
-        copy(zlib_lib
-                SRCS ${ZLIB_INCLUDE_DIR} ${ZLIB_LIBRARIES}
-                DSTS ${dst_dir} ${dst_dir}/lib
-                DEPS zlib)
+        #set(dst_dir "${FLUID_INSTALL_DIR}/third_party/install/zlib")
+        #copy(zlib_lib
+        #        SRCS ${ZLIB_INCLUDE_DIR} ${ZLIB_LIBRARIES}
+        #        DSTS ${dst_dir} ${dst_dir}/lib
+        #        DEPS zlib)
     endif ()
 endif (NOT WIN32)
 
@@ -171,7 +170,12 @@ copy(memory_lib
         DSTS ${dst_dir}/${module} ${dst_dir}/${module}/detail ${dst_dir}/${module}/allocation
         )
 
-set(inference_deps paddle_fluid_shared paddle_fluid)
+if (BUILD_STATIC_LIB_ONLY)
+   set(inference_deps paddle_fluid)
+else()
+   set(inference_deps paddle_fluid_shared paddle_fluid)
+endif()
+
 
 set(module "inference/api")
 if (WITH_ANAKIN AND WITH_MKL)

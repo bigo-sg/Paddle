@@ -26,9 +26,9 @@ class ExceptionHolder {
   void Catch(std::exception_ptr eptr) {
     try {
       std::rethrow_exception(eptr);
-    } catch (platform::EOFException exp) {
+    } catch (const platform::EOFException& exp) {
       Catch(exp);
-    } catch (platform::EnforceNotMet exp) {
+    } catch (const platform::EnforceNotMet& exp) {
       Catch(exp);
     } catch (std::exception& ex) {
       LOG(FATAL) << "std::exception caught, " << ex.what();

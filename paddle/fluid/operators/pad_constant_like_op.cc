@@ -204,9 +204,7 @@ REGISTER_OPERATOR(pad_constant_like_grad, ops::PadConstantLikeOpGrad);
 
 REGISTER_OP_CPU_KERNEL(
     pad_constant_like,
-    ops::PadConstantLikeKernel<paddle::platform::CPUDeviceContext, float>,
-    ops::PadConstantLikeKernel<paddle::platform::CPUDeviceContext, double>);
+    ops::PadConstantLikeKernel<paddle::platform::CPUDeviceContext, float>);
 REGISTER_OP_CPU_KERNEL(
     pad_constant_like_grad,
-    ops::PadConstantLikeGradKernel<paddle::platform::CPUDeviceContext, float>,
-    ops::PadConstantLikeGradKernel<paddle::platform::CPUDeviceContext, double>);
+    ops::PadConstantLikeGradKernel<paddle::platform::CPUDeviceContext, float>);

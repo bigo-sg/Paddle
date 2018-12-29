@@ -148,7 +148,7 @@ class Matrix {
       int dim1,
       int dim2,
       bool copy = true,
-      bool useGpu = isUsingGpu()) throw(UnsupportError);
+      bool useGpu = isUsingGpu()) ;
 
   /**
    *  Create Cpu Dense Matrix from numpy matrix, dtype=float32
@@ -186,12 +186,12 @@ class Matrix {
    */
   void toNumpyMatInplace(float** view_data,
                          int* dim1,
-                         int* dim2) throw(UnsupportError);
+                         int* dim2) ;
 
   /// Copy To numpy mat.
   void copyToNumpyMat(float** view_m_data,
                       int* dim1,
-                      int* dim2) throw(UnsupportError);
+                      int* dim2) ;
 
   /// Copy From Numpy Mat
   void copyFromNumpyMat(float* data, int dim1, int dim2) throw(UnsupportError,
@@ -200,22 +200,22 @@ class Matrix {
   /// return true if this matrix is sparse.
   bool isSparse() const;
 
-  SparseValueType getSparseValueType() const throw(UnsupportError);
+  SparseValueType getSparseValueType() const ;
 
-  SparseFormatType getSparseFormat() const throw(UnsupportError);
+  SparseFormatType getSparseFormat() const ;
 
-  IntArray getSparseRowCols(size_t i) const throw(UnsupportError, RangeError);
+  IntArray getSparseRowCols(size_t i) const ;
 
   IntWithFloatArray getSparseRowColsVal(size_t i) const
-      throw(UnsupportError, RangeError);
+      ;
 
   size_t getHeight() const;
 
   size_t getWidth() const;
 
-  float get(size_t x, size_t y) const throw(RangeError);
+  float get(size_t x, size_t y) const ;
 
-  void set(size_t x, size_t y, float val) throw(RangeError, UnsupportError);
+  void set(size_t x, size_t y, float val) ;
 
   /// return type is list of float
   FloatArray getData() const;
@@ -228,7 +228,7 @@ class Matrix {
   void sparseCopyFrom(const std::vector<int>& rows,
                       const std::vector<int>& cols,
                       const std::vector<float>& values =
-                          std::vector<float>()) throw(UnsupportError);
+                          std::vector<float>()) ;
 
   bool isGpu() const;
 
@@ -267,7 +267,7 @@ class Vector {
       float* data,
       int dim,
       bool copy = true,
-      bool useGpu = isUsingGpu()) throw(UnsupportError);
+      bool useGpu = isUsingGpu()) ;
   /**
    * Create Cpu Vector from numpy array, which dtype=float32
    *
@@ -282,13 +282,13 @@ class Vector {
 
   /**
    * copy from another vector
-   * throw(RangeError) if size of src vector is different from size of this
+   *  if size of src vector is different from size of this
    * vector
    */
-  void copyFrom(Vector* src) throw(RangeError);
+  void copyFrom(Vector* src) ;
 
   /// Cast to numpy array inplace.
-  void toNumpyArrayInplace(float** view_data, int* dim1) throw(UnsupportError);
+  void toNumpyArrayInplace(float** view_data, int* dim1) ;
 
   /// Copy to numpy array.
   void copyToNumpyArray(float** view_m_data, int* dim1);
@@ -297,10 +297,10 @@ class Vector {
   void copyFromNumpyArray(float* data, int dim);
 
   /// __getitem__ in python
-  float get(const size_t idx) const throw(RangeError, UnsupportError);
+  float get(const size_t idx) const ;
 
   /// __setitem__ in python
-  void set(const size_t idx, float val) throw(RangeError, UnsupportError);
+  void set(const size_t idx, float val) ;
 
   /// Return is GPU vector or not.
   bool isGpu() const;
@@ -341,7 +341,7 @@ class IVector {
       int* data,
       int dim,
       bool copy = true,
-      bool useGpu = isUsingGpu()) throw(UnsupportError);
+      bool useGpu = isUsingGpu()) ;
 
   /**
    * Create Cpu IVector from numpy array, which dtype=int32
@@ -357,7 +357,7 @@ class IVector {
   static IVector* createGpuVectorFromNumpy(int* data, int dim);
 
   /// Cast to numpy array inplace.
-  void toNumpyArrayInplace(int** view_data, int* dim1) throw(UnsupportError);
+  void toNumpyArrayInplace(int** view_data, int* dim1) ;
 
   /// Copy to numpy array.
   void copyToNumpyArray(int** view_m_data, int* dim1);
@@ -371,16 +371,16 @@ class IVector {
   IntArray getData() const;
 
   /// This method will map to python [] method.
-  int& operator[](const size_t idx) throw(RangeError, UnsupportError);
+  int& operator[](const size_t idx) ;
 
   const int& operator[](const size_t idx) const
-      throw(RangeError, UnsupportError);
+      ;
 
-  inline int get(const size_t idx) const throw(RangeError, UnsupportError) {
+  inline int get(const size_t idx) const  {
     return (*this)[idx];
   }
 
-  inline void set(const size_t idx, int val) throw(RangeError, UnsupportError) {
+  inline void set(const size_t idx, int val)  {
     (*this)[idx] = val;
   }
 
@@ -428,16 +428,16 @@ class Arguments {
    *
    * the param idx is the slot id
    */
-  Matrix* getSlotValue(size_t idx) const throw(RangeError);
-  Matrix* getSlotGrad(size_t idx) const throw(RangeError);
-  IVector* getSlotIds(size_t idx) const throw(RangeError);
-  Matrix* getSlotIn(size_t idx) const throw(RangeError);
-  IVector* getSlotSequenceStartPositions(size_t idx) const throw(RangeError);
-  IVector* getSlotSubSequenceStartPositions(size_t idx) const throw(RangeError);
-  IVector* getSlotSequenceDim(size_t idx) const throw(RangeError);
+  Matrix* getSlotValue(size_t idx) const ;
+  Matrix* getSlotGrad(size_t idx) const ;
+  IVector* getSlotIds(size_t idx) const ;
+  Matrix* getSlotIn(size_t idx) const ;
+  IVector* getSlotSequenceStartPositions(size_t idx) const ;
+  IVector* getSlotSubSequenceStartPositions(size_t idx) const ;
+  IVector* getSlotSequenceDim(size_t idx) const ;
   // End Of get functions of Arguments
 
-  int64_t getBatchSize(size_t idx = 0) const throw(RangeError);
+  int64_t getBatchSize(size_t idx = 0) const ;
 
   /**
    * The set functions of Arguments.
@@ -445,15 +445,15 @@ class Arguments {
    * The param idx is the slot id.
    * The other param is the input Matrix or vector.
    */
-  void setSlotValue(size_t idx, Matrix* mat) throw(RangeError);
-  void setSlotGrad(size_t idx, Matrix* mat) throw(RangeError);
-  void setSlotIn(size_t idx, Matrix* mat) throw(RangeError);
-  void setSlotIds(size_t idx, IVector* vec) throw(RangeError);
+  void setSlotValue(size_t idx, Matrix* mat) ;
+  void setSlotGrad(size_t idx, Matrix* mat) ;
+  void setSlotIn(size_t idx, Matrix* mat) ;
+  void setSlotIds(size_t idx, IVector* vec) ;
   void setSlotSequenceStartPositions(size_t idx,
-                                     IVector* vec) throw(RangeError);
+                                     IVector* vec) ;
   void setSlotSubSequenceStartPositions(size_t idx,
-                                        IVector* vec) throw(RangeError);
-  void setSlotSequenceDim(size_t idx, IVector* vec) throw(RangeError);
+                                        IVector* vec) ;
+  void setSlotSequenceDim(size_t idx, IVector* vec) ;
 
   /**
    * Set the frame height of the idx-th Argument.
@@ -461,7 +461,7 @@ class Arguments {
    * @param ids The index of which Argument.
    * @param h The height value.
    */
-  void setSlotFrameHeight(size_t idx, size_t h) throw(RangeError);
+  void setSlotFrameHeight(size_t idx, size_t h) ;
 
   /**
    * Set the frame height of the idx-th Argument.
@@ -469,10 +469,10 @@ class Arguments {
    * @param ids The index of which Argument.
    * @param h The height value.
    */
-  void setSlotFrameWidth(size_t idx, size_t w) throw(RangeError);
+  void setSlotFrameWidth(size_t idx, size_t w) ;
 
-  size_t getSlotFrameHeight(size_t idx = 0) const throw(RangeError);
-  size_t getSlotFrameWidth(size_t idx = 0) const throw(RangeError);
+  size_t getSlotFrameHeight(size_t idx = 0) const ;
+  size_t getSlotFrameWidth(size_t idx = 0) const ;
 
   float sum() const;
 
@@ -792,15 +792,15 @@ class GradientMachine {
   void loadParameters(const std::string& path);
 
   size_t getParameterSize() const;
-  Parameter* getParameter(size_t i) throw(RangeError);
+  Parameter* getParameter(size_t i) ;
 
   size_t getNonStaticParameterSize() const;
-  Parameter* getNonStaticParameter(size_t i) throw(RangeError);
+  Parameter* getNonStaticParameter(size_t i) ;
 
   void randParameters();
 
   Arguments* getLayerOutput(const std::string& layerName) const
-      throw(UnsupportError);
+      ;
 
   /**
    * Create a sequence generator.
@@ -845,7 +845,7 @@ class ParameterUpdater {
   static ParameterUpdater* createNewRemoteUpdater(
       OptimizationConfig* config,
       const std::string pserverSpec,
-      const bool useEtcd) throw(UnsupportError);
+      const bool useEtcd) ;
   ~ParameterUpdater();
 
   /**
@@ -964,10 +964,10 @@ class Trainer {
   virtual ~Trainer();
 
   /// Create A Trainer By TrainerConfig. using paddle command line.
-  static Trainer* createByCommandLine() throw(IOError);
+  static Trainer* createByCommandLine() ;
 
   static Trainer* create(TrainerConfig* optConfig,
-                         GradientMachine* gm) throw(IOError);
+                         GradientMachine* gm) ;
 
   /// Start training
   void startTrain();
@@ -1017,9 +1017,9 @@ class ISequenceResults {
    *               each word. Default is false.
    */
   virtual std::string getSentence(size_t id, bool split = false) const
-      throw(RangeError) = 0;
-  virtual std::vector<int> getSequence(size_t id) const throw(RangeError) = 0;
-  virtual float getScore(size_t id) const throw(RangeError) = 0;
+       = 0;
+  virtual std::vector<int> getSequence(size_t id) const  = 0;
+  virtual float getScore(size_t id) const  = 0;
 };
 
 struct SequenceGeneratorPrivate;

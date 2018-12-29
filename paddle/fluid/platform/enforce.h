@@ -132,6 +132,18 @@ struct EOFException : public std::exception {
 #endif
 
 template <typename... Args>
+inline typename std::enable_if<sizeof...(Args) != 0, void>::type abort_on_error(
+    bool stat, const Args&... args) {
+  if (UNLIKELY(!(stat))) {
+#ifdef REPLACE_ENFORCE_GLOG
+    LOG(FATAL) << string::Sprintf(args...);
+#endif
+    std::abort();
+  }
+}
+
+
+template <typename... Args>
 inline typename std::enable_if<sizeof...(Args) != 0, void>::type throw_on_error(
     bool stat, const Args&... args) {
   if (UNLIKELY(!(stat))) {
@@ -249,6 +261,12 @@ inline void throw_on_error(T e) {
             std::runtime_error(paddle::string::Sprintf(__VA_ARGS__))), \
         __FILE__, __LINE__);                                           \
   } while (false)
+
+#define PADDLE_ENFORCE_NOEXCEPT(...)                                   \
+  do {                                                                 \
+    ::paddle::platform::abort_on_error(__VA_ARGS__);                   \
+  } while (false)
+
 
 #ifndef REPLACE_ENFORCE_GLOG
 #define PADDLE_ENFORCE(...)                                             \

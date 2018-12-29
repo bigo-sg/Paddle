@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.3)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(PADDLE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(PADDLE_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
@@ -193,15 +193,15 @@ include(external/gflags)    # download, build, install gflags
 include(external/glog)      # download, build, install glog
 include(external/gtest)     # download, build, install gtest
 include(external/protobuf)  # download, build, install protobuf
-#include(external/python)    # download, build, install python
+include(external/python)    # download, build, install python
 include(external/openblas)  # download, build, install openblas
 include(external/mkldnn)    # download, build, install mkldnn
 include(external/ngraph)    # download, build, install nGraph
-#include(external/swig)      # download, build, install swig
+include(external/swig)      # download, build, install swig
 include(external/boost)     # download boost
 include(external/any)       # download libn::any
 include(external/eigen)     # download eigen3
-#include(external/pybind11)  # download pybind11
+include(external/pybind11)  # download pybind11
 include(external/cares)
 include(external/cub)
 include(external/rocprim)
@@ -216,12 +216,6 @@ include(external/warpctc)   # download, build, install warpctc
 include(cupti)
 include(external/gzstream)
 endif (NOT WIN32)
-
-if(WITH_PSLIB)
-    include(external/libmct)
-    include(external/pslib_brpc)
-    include(external/pslib)
-endif(WITH_PSLIB)
 
 if(WITH_DISTRIBUTE)
     if(WITH_GRPC)
@@ -255,7 +249,7 @@ if(WITH_GPU)
     include(tensorrt)
 endif()
 if(WITH_MKL OR WITH_MKLML)
-   # include(external/anakin)
+    include(external/anakin)
 elseif()
     set(WITH_ANAKIN OFF CACHE STRING "Anakin is used in MKL only now." FORCE)
 endif()

@@ -58,12 +58,16 @@ struct Style {
 template <typename... Args>
 static void PrettyLogEndl(const std::string &style, const char *fmt,
                           const Args &... args) {
+#ifndef NO_PRETTY_LOG
   std::cerr << style << Sprintf(fmt, args...) << reset() << std::endl;
+#endif
 }
 template <typename... Args>
 static void PrettyLog(const std::string &style, const char *fmt,
                       const Args &... args) {
+#ifndef NO_PRETTY_LOG
   std::cerr << style << Sprintf(fmt, args...) << reset();
+#endif
 }
 
 }  // namespace string

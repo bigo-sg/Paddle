@@ -53,7 +53,7 @@ Trainer::Trainer() : m(new TrainerPrivate()) {
 
 Trainer::~Trainer() { delete m; }
 
-Trainer* Trainer::createByCommandLine() throw(IOError) {
+Trainer* Trainer::createByCommandLine()  {
   auto retv = new Trainer();
   if (retv->m->getConfig().IsInitialized()) {
     return retv;
@@ -68,7 +68,7 @@ Trainer::Trainer(TrainerConfig* config, GradientMachine* gm)
 }
 
 Trainer* Trainer::create(TrainerConfig* config,
-                         GradientMachine* gm) throw(IOError) {
+                         GradientMachine* gm)  {
   auto retv = new Trainer(config, gm);
   if (retv->m->getConfig().IsInitialized()) {
     return retv;
