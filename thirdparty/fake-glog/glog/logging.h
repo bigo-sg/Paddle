@@ -14,6 +14,7 @@ struct NullStream : std::ostream {
 
 } //fake_glog
 
+DEFINE_bool(logtostderr, false, "faking logtostderr");
 #define LOG(severity) ::fake_glog::NullStream()
 #define VLOG(severity) ::fake_glog::NullStream()
 #define VLOG_IS_ON(severity) (false)
