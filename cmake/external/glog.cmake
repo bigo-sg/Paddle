@@ -36,6 +36,8 @@ if (WITH_GLOG STREQUAL "system")
     
     message(STATUS "found glog ${glog_VERSION}  in ${glog_INCLUDE_DIR} : ${glog_LIBRARY_DIR}")
     return()
+elseif (WITH_GLOG STREQUAL "fake")
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/fake-glog)
 endif()
 
 SET(GLOG_SOURCES_DIR ${THIRD_PARTY_PATH}/glog)
