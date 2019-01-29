@@ -18,11 +18,6 @@ limitations under the License. */
 #include "paddle/fluid/framework/lod_tensor.h"
 
 namespace paddle {
-std::ostream& operator<<(std::ostream& out,
-                         const framework::LoDRankTable& table);
-}
-
-namespace paddle {
 namespace framework {
 
 // LoD Rank Table stores the `level` of `lod` which is ordered by sequence
