@@ -17,6 +17,7 @@ limitations under the License. */
 #include "paddle/fluid/operators/lookup_table_op.h"
 #include "paddle/fluid/platform/assert.h"
 #include "paddle/fluid/platform/cuda_primitives.h"
+#include "paddle/fluid/platform/float16.h"
 
 namespace paddle {
 namespace operators {
@@ -31,8 +32,8 @@ __global__ void LookupTable(T *output, const T *table, const int64_t *ids,
 
   while (idy < K) {
     int64_t id = ids[idy];
-    PADDLE_ASSERT(id >= 0);
-    PADDLE_ASSERT(id < N);
+    PADDLE_ASSERT_MSG_CODE(id >= 0, "received id:", id);
+    PADDLE_ASSERT_MSG_CODE(id < N, "received id:", id);
     T *out = output + idy * D;
     const T *tab = table + id * D;
     for (int i = idx; i < D; i += BlockDimX) {
@@ -57,9 +58,9 @@ __global__ void LookupTableGrad(T *table, const T *output, const int64_t *ids,
   int idy = blockIdx.x + threadIdx.y * GridDimX;
 
   while (idy < K) {
-    int id = ids[idy];
-    PADDLE_ASSERT(id >= 0);
-    PADDLE_ASSERT(id < N);
+    int64_t id = ids[idy];
+    PADDLE_ASSERT_MSG_CODE(id >= 0, "received id:", id);
+    PADDLE_ASSERT_MSG_CODE(id < N, "received id:", id);
     const T *out = output + idy * D;
     T *tab = table + id * D;
     for (int i = idx; i < D; i += BlockDimX) {
@@ -92,7 +93,8 @@ class LookupTableCUDAKernel : public framework::OpKernel<T> {
 // server
 #ifdef PADDLE_WITH_DISTRIBUTE
       operators::distributed::prefetch(id_name, out_name, table_names, epmap,
-                                       height_sections, context);
+                                       height_sections, context,
+                                       context.scope());
 #else
       PADDLE_THROW(
           "paddle is not compiled with distribute support, can not do "
@@ -192,8 +194,11 @@ class LookupTableGradCUDAKernel : public framework::OpKernel<T> {
 }  // namespace paddle
 
 namespace ops = paddle::operators;
+namespace plat = paddle::platform;
 REGISTER_OP_CUDA_KERNEL(lookup_table, ops::LookupTableCUDAKernel<float>,
-                        ops::LookupTableCUDAKernel<double>);
+                        ops::LookupTableCUDAKernel<double>,
+                        ops::LookupTableCUDAKernel<plat::float16>);
 REGISTER_OP_CUDA_KERNEL(lookup_table_grad,
                         ops::LookupTableGradCUDAKernel<float>,
-                        ops::LookupTableGradCUDAKernel<double>);
+                        ops::LookupTableGradCUDAKernel<double>,
+                        ops::LookupTableGradCUDAKernel<plat::float16>);
