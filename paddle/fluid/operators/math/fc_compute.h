@@ -41,6 +41,7 @@ inline void FCCompute(const BlasT<DeviceContext, T>& blas, const int M,
     auto compute = jit::KernelFuncs<jit::kVAdd, jit::XYZNTuples<T>,
                                     platform::CPUPlace>::Cache()
                        .At(N);
+
 #ifdef PADDLE_WITH_MKLML
 #pragma omp parallel for
 #endif

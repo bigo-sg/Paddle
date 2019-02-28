@@ -681,8 +681,6 @@ void AnalysisPredictor::CollectVarShapes() {
     }
   }
   batch_var_shapes_.push_back(var_shapes);
-  LOG_FIRST_N(INFO, 1) << "Collected " << batch_var_shapes_.size()
-                       << " batch of var shapes for analysis";
 }
 
 void AnalysisPredictor::SerializeBatchVarShapes(const std::string &path) {
