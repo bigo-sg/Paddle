@@ -28,7 +28,7 @@ endif(WIN32)
 if(WIN32)
   sep_library(paddle_fluid_origin DEPS ${fluid_modules} paddle_fluid_api)
 else(WIN32)
-  cc_library(paddle_fluid_origin DEPS ${fluid_modules} paddle_fluid_api)
+  #cc_library(paddle_fluid_origin DEPS ${fluid_modules} paddle_fluid_api)
 endif(WIN32)
 
 add_subdirectory(api)

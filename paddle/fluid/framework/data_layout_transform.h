@@ -19,6 +19,7 @@
 #include "paddle/fluid/framework/op_kernel_type.h"
 #include "paddle/fluid/framework/tensor.h"
 #include "paddle/fluid/framework/variable.h"
+#include "paddle/fluid/framework/data_type.h"
 
 namespace paddle {
 namespace framework {
