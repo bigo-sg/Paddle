@@ -226,7 +226,7 @@ class ExecutionContext {
     res.reserve(it->second.size());
     std::transform(it->second.begin(), it->second.end(),
                    std::back_inserter(res),
-                   [this](Variable* var) { return var; });
+                   [](Variable* var) { return var; });
     return res;
   }
 
