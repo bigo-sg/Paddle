@@ -133,6 +133,9 @@ set(COMMON_FLAGS
     -Wimplicit-fallthrough=0 # Warning in tinyformat.h
     -Wno-error=maybe-uninitialized # Warning in boost gcc 7.2
 )
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        set(COMMON_FLAGS ${COMMON_FLAGS} -Wno-absolute-value)
+    endif()
 
 set(GPU_COMMON_FLAGS
     -fPIC

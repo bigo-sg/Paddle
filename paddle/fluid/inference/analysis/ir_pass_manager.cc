@@ -89,7 +89,7 @@ std::unique_ptr<Graph> IRPassManager::Apply(std::unique_ptr<Graph> graph) {
     PrettyLogEndl(Style::H2(), "--- Running IR pass [%s]", pass->Type());
     graph = pass->Apply(std::move(graph));
   }
-  return std::move(graph);
+  return graph;
 }
 
 framework::proto::ProgramDesc IRPassManager::AcquireProgram(

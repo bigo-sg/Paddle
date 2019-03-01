@@ -54,7 +54,7 @@ class JitCode : public Xbyak::CodeGenerator {
     if (FLAGS_dump_jitcode) {
       this->dumpCode(code);
     }
-    return reinterpret_cast<const FUNC>(code);
+    return reinterpret_cast<const FUNC>(const_cast<Xbyak::uint8 *>(code));
   }
   DISABLE_COPY_AND_ASSIGN(JitCode);
 
